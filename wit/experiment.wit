@@ -1,0 +1,20 @@
+default world experiment {
+  import wasi-default-clocks: pkg.wasi-default-clocks
+  import wasi-timezone: pkg.wasi-timezone
+  import wasi-wall-clock: pkg.wasi-wall-clock
+  import wasi-monotonic-clock: pkg.wasi-monotonic-clock
+  import wasi-logging: pkg.wasi-logging
+  import wasi-stderr: pkg.wasi-stderr
+  import wasi-filesystem: pkg.wasi-filesystem
+  import wasi-random: pkg.wasi-random
+  import wasi-poll: pkg.wasi-poll
+  import wasi-io: pkg.wasi-io
+  import wasi-exit: pkg.wasi-exit
+
+  // Networking. This is currently based on the prototype API. We expect
+  // to switch to wasi-sockets soon.
+  import wasi-net: pkg.wasi-net
+  import wasi-ip: pkg.wasi-ip
+  import wasi-tcp: pkg.wasi-tcp
+  import wasi-dns: pkg.wasi-dns
+}
