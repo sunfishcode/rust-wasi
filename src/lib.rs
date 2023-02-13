@@ -16,12 +16,12 @@
 // build complexity for users.
 
 #[cfg(feature = "std")]
-wit_bindgen_guest_rust::generate!({
+wit_bindgen::generate!({
     world: "experiment",
 });
 
 #[cfg(not(feature = "std"))]
-wit_bindgen_guest_rust::generate!({
+wit_bindgen::generate!({
     world: "experiment",
     no_std,
 });
