@@ -63,17 +63,46 @@ flags descriptor-flags {
     read,
     /// Write mode: Data can be written to.
     write,
-    /// Write according to synchronized I/O data integrity completion. Only the
-    /// data stored in the file is synchronized.
-    dsync,
-    /// Non-blocking mode.
+    /// Requests non-blocking operation.
+    ///
+    /// When this flag is enabled, functions may return immediately with an
+    /// `errno::again` error code in situations where they would otherwise
+    /// block. However, this non-blocking behavior is not required.
+    /// Implementations are permitted to ignore this flag and block.
     nonblock,
-    /// Synchronized read I/O operations.
-    rsync,
-    /// Write according to synchronized I/O file integrity completion. In
-    /// addition to synchronizing the data stored in the file, the
-    /// implementation may also synchronously update the file's metadata.
+    /// Request that writes be performed according to synchronized I/O file
+    /// integrity completion. The data stored in the file and the file's
+    /// metadata are synchronized.
+    ///
+    /// The precise semantics of this operation have not yet been defined for
+    /// WASI. At this time, it should be interpreted as a request, and not a
+    /// requirement.
     sync,
+    /// Request that writes be performed according to synchronized I/O data
+    /// integrity completion. Only the data stored in the file is
+    /// synchronized.
+    ///
+    /// The precise semantics of this operation have not yet been defined for
+    /// WASI. At this time, it should be interpreted as a request, and not a
+    /// requirement.
+    dsync,
+    /// Requests that reads be performed at the same level of integrety
+    /// requested for writes.
+    ///
+    /// The precise semantics of this operation have not yet been defined for
+    /// WASI. At this time, it should be interpreted as a request, and not a
+    /// requirement.
+    rsync,
+    /// Mutating directories mode: Directory contents may be mutated.
+    ///
+    /// When this flag is unset on a descriptor, operations using the
+    /// descriptor which would create, rename, delete, modify the data or
+    /// metadata of filesystem objects, or obtain another handle which
+    /// would permit any of those, shall fail with `errno::rofs` if
+    /// they would otherwise succeed.
+    ///
+    /// This may only be set on directories.
+    mutate-directory,
 }
 ```
 
@@ -368,6 +397,9 @@ fadvise: func(
 ```wit
 /// Synchronize the data of a file to disk.
 ///
+/// This function succeeds with no effect if the file descriptor is not
+/// opened for writing.
+///
 /// Note: This is similar to `fdatasync` in POSIX.
 datasync: func(this: descriptor) -> result<_, errno>
 ```
@@ -400,7 +432,9 @@ datasync: func(this: descriptor) -> result<_, errno>
 
 ## `set-flags`
 ```wit
-/// Set flags associated with a descriptor.
+/// Set status flags associated with a descriptor.
+///
+/// This function may only change the `append` and `nonblock` flags.
 ///
 /// Note: This is similar to `fcntl(fd, F_SETFL, flags)` in POSIX.
 ///
@@ -471,6 +505,10 @@ pwrite: func(
 ```wit
 /// Read directory entries from a directory.
 ///
+/// On filesystems where directories contain entries referring to themselves
+/// and their parents, often named `.` and `..` respectively, these entries
+/// are omitted.
+///
 /// This always returns a new stream which starts at the beginning of the
 /// directory.
 readdir: func(this: descriptor) -> result<dir-entry-stream, errno>
@@ -479,6 +517,9 @@ readdir: func(this: descriptor) -> result<dir-entry-stream, errno>
 ## `sync`
 ```wit
 /// Synchronize the data and metadata of a file to disk.
+///
+/// This function succeeds with no effect if the file descriptor is not
+/// opened for writing.
 ///
 /// Note: This is similar to `fsync` in POSIX.
 sync: func(this: descriptor) -> result<_, errno>
@@ -569,6 +610,15 @@ link-at: func(
 /// from depending on making assumptions about indexes, since this is
 /// error-prone in multi-threaded contexts. The returned descriptor is
 /// guaranteed to be less than 2**31.
+///
+/// If `flags` contains `descriptor-flags::mutate-directory`, and the base
+/// descriptor doesn't have `descriptor-flags::mutate-directory` set,
+/// `open-at` fails with `errno::rofs`.
+///
+/// If `flags` contains `write` or `append`, or `o-flags` contains `trunc`
+/// or `create`, and the base descriptor doesn't have
+/// `descriptor-flags::mutate-directory` set, `open-at` fails with
+/// `errno::rofs`.
 ///
 /// Note: This is similar to `openat` in POSIX.
 open-at: func(
@@ -765,7 +815,7 @@ lock-exclusive: func(this: descriptor) -> result<_, errno>
 /// It is unspecified how shared locks interact with locks acquired by
 /// non-WASI programs.
 ///
-/// This function returns `errno::wouldblock` if the lock cannot be acquired.
+/// This function returns `errno::again` if the lock cannot be acquired.
 ///
 /// Not all filesystems support locking; on filesystems which don't support
 /// locking, this function returns `errno::notsup`.
@@ -792,7 +842,7 @@ try-lock-shared: func(this: descriptor) -> result<_, errno>
 /// is not opened for writing. It is unspecified how exclusive locks interact
 /// with locks acquired by non-WASI programs.
 ///
-/// This function returns `errno::wouldblock` if the lock cannot be acquired.
+/// This function returns `errno::again` if the lock cannot be acquired.
 ///
 /// Not all filesystems support locking; on filesystems which don't support
 /// locking, this function returns `errno::notsup`.
