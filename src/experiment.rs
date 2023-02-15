@@ -5635,10 +5635,10 @@ pub mod wasi_tcp {
     /// The connection should be destroyed with `close-connection` when no longer in use.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html
-    /// - https://man7.org/linux/man-pages/man2/bind.2.html
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html
-    /// - https://man7.org/linux/man-pages/man2/connect.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html>
+    /// - <https://man7.org/linux/man-pages/man2/bind.2.html>
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html>
+    /// - <https://man7.org/linux/man-pages/man2/connect.2.html>
     pub fn connect(
         network: Network,
         local_address: IpSocketAddress,
