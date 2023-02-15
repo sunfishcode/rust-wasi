@@ -42,7 +42,7 @@ pub mod wasi_poll {
     ///
     /// Note that the return type would ideally be `list<bool>`, but that would
     /// be more difficult to polyfill given the current state of `wit-bindgen`.
-    /// See https://github.com/bytecodealliance/preview2-prototyping/pull/11#issuecomment-1329873061
+    /// See <https://github.com/bytecodealliance/preview2-prototyping/pull/11#issuecomment-1329873061>
     /// for details.  For now, we use zero to mean "not ready" and non-zero to
     /// mean "ready".
     pub fn poll_oneoff(in_: &[Pollable]) -> wit_bindgen::rt::vec::Vec<u8> {
