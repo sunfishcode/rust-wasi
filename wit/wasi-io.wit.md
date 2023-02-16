@@ -83,11 +83,11 @@ type input-stream = u32
     ) -> result<tuple<u64, bool>, stream-error>
 ```
 
-## `subscribe`
+## `subscribe-to-input-stream`
 ```wit
 /// Create a `pollable` which will resolve once either the specified stream has bytes
 /// available to read or the other end of the stream has been closed.
-subscribe-read: func(this: input-stream) -> pollable
+subscribe-to-input-stream: func(this: input-stream) -> pollable
 ```
 
 # `drop-input-stream`
@@ -154,7 +154,7 @@ type output-stream = u32
 ```
 
 ## `forward`
-```wit=
+```wit
     /// Forward the entire contents of an input stream to an output stream.
     ///
     /// This function repeatedly reads from the input stream and writes
@@ -169,11 +169,11 @@ type output-stream = u32
     ) -> result<u64, stream-error>
 ```
 
-# `subscribe`
+# `subscribe-to-output-stream`
 ```wit
 /// Create a `pollable` which will resolve once either the specified stream is ready
 /// to accept bytes or the other end of the stream has been closed.
-subscribe: func(this: output-stream) -> pollable
+subscribe-to-output-stream: func(this: output-stream) -> pollable
 ```
 
 # `drop-output-stream`
