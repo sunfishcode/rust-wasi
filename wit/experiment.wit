@@ -1,20 +1,20 @@
 default world experiment {
-  import wasi-default-clocks: pkg.wasi-default-clocks
-  import wasi-timezone: pkg.wasi-timezone
-  import wasi-wall-clock: pkg.wasi-wall-clock
-  import wasi-monotonic-clock: pkg.wasi-monotonic-clock
-  import wasi-logging: pkg.wasi-logging
-  import wasi-stderr: pkg.wasi-stderr
-  import wasi-filesystem: pkg.wasi-filesystem
-  import wasi-random: pkg.wasi-random
-  import wasi-poll: pkg.wasi-poll
-  import wasi-io: pkg.wasi-io
-  import wasi-exit: pkg.wasi-exit
+  import instance-monotonic-clock: clocks.instance-monotonic-clock
+  import instance-wall-clock: clocks.instance-wall-clock
+  import timezone: clocks.timezone
+  import wall-clock: clocks.wall-clock
+  import monotonic-clock: clocks.monotonic-clock
+  import logging: logging.logging
+  import stderr: cli.stderr
+  import filesystem: filesystem.filesystem
+  import random: random.random
+  import poll: poll.poll
+  import streams: io.streams
+  import exit: cli.exit
 
-  // Networking. This is currently based on the prototype API. We expect
-  // to switch to wasi-sockets soon.
-  import wasi-net: pkg.wasi-net
-  import wasi-ip: pkg.wasi-ip
-  import wasi-tcp: pkg.wasi-tcp
-  import wasi-dns: pkg.wasi-dns
+  import udp: sockets.udp
+  import tcp: sockets.tcp
+  import network: sockets.network
+  import ip-name-lookup: sockets.ip-name-lookup
+  import instance-network: sockets.instance-network
 }

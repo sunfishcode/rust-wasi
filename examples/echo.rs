@@ -1,12 +1,14 @@
-use wasi::wasi_io::{
-    read, subscribe, subscribe_read, write, InputStream, OutputStream, StreamError,
+use wasi::poll::{poll_oneoff, Pollable, drop_pollable};
+use wasi::streams::{
+    read, subscribe_to_input_stream, subscribe_to_output_stream, write, InputStream, OutputStream,
+    StreamError,
 };
-use wasi::wasi_poll::{Pollable, poll_oneoff};
 
 #[allow(dead_code)] // TODO
 fn echo_server(streams: &[(InputStream, OutputStream)]) -> Result<(), StreamError> {
-    let input_pollables = streams.iter()
-        .map(|(input, _output)| subscribe_read(*input))
+    let input_pollables = streams
+        .iter()
+        .map(|(input, _output)| subscribe_to_input_stream(*input))
         .collect::<Vec<Pollable>>();
 
     loop {
@@ -21,14 +23,18 @@ fn echo_server(streams: &[(InputStream, OutputStream)]) -> Result<(), StreamErro
 
             let mut view = &data[..];
             while !view.is_empty() {
-                let pollable = subscribe(*output);
+                let pollable = subscribe_to_output_stream(*output);
                 poll_oneoff(&[pollable]);
+                drop_pollable(pollable);
 
                 let nwritten = write(*output, view)?;
                 view = &view[nwritten as usize..];
             }
 
             if end_of_stream {
+                for pollable in input_pollables {
+                    drop_pollable(pollable);
+                }
                 return Ok(());
             }
         }
