@@ -2,6 +2,6 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-mod experiment;
+mod cli;
 
-pub use experiment::*;
+pub use cli::*;

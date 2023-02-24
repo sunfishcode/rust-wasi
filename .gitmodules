@@ -1,0 +1,3 @@
+[submodule "wit"]
+	path = wasi-cli
+	url = https://github.com/sunfishcode/wasi-cli

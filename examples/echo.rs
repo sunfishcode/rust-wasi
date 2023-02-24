@@ -1,4 +1,4 @@
-use wasi::poll::{poll_oneoff, Pollable, drop_pollable};
+use wasi::poll::{drop_pollable, poll_oneoff, Pollable};
 use wasi::streams::{
     read, subscribe_to_input_stream, subscribe_to_output_stream, write, InputStream, OutputStream,
     StreamError,
