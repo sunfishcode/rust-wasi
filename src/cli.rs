@@ -4906,8 +4906,8 @@ pub mod ip_name_lookup {
     /// - a syntactically invalid domain name in another way
     ///
     /// References:
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/getaddrinfo.html
-    /// - https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getaddrinfo.html>
+    /// - <https://man7.org/linux/man-pages/man3/getaddrinfo.3.html>
     pub fn resolve_addresses(
         network: Network,
         name: &str,
@@ -5276,8 +5276,8 @@ pub mod tcp {
     /// - the socket is already bound.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html
-    /// - https://man7.org/linux/man-pages/man2/bind.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html>
+    /// - <https://man7.org/linux/man-pages/man2/bind.2.html>
     pub fn bind(
         this: TcpSocket,
         network: Network,
@@ -5430,8 +5430,8 @@ pub mod tcp {
     /// - either the remote IP address or port is 0.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html
-    /// - https://man7.org/linux/man-pages/man2/connect.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html>
+    /// - <https://man7.org/linux/man-pages/man2/connect.2.html>
     pub fn connect(
         this: TcpSocket,
         network: Network,
@@ -5584,8 +5584,8 @@ pub mod tcp {
     /// - the socket is already in the Connection or Listener state.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/listen.html
-    /// - https://man7.org/linux/man-pages/man2/listen.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/listen.html>
+    /// - <https://man7.org/linux/man-pages/man2/listen.2.html>
     pub fn listen(this: TcpSocket, network: Network) -> Result<(), Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -5642,8 +5642,8 @@ pub mod tcp {
     /// Fails when this socket is not in the Listening state.
     ///
     /// References:
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/accept.html
-    /// - https://man7.org/linux/man-pages/man2/accept.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/accept.html>
+    /// - <https://man7.org/linux/man-pages/man2/accept.2.html>
     pub fn accept(this: TcpSocket) -> Result<(TcpSocket, InputStream, OutputStream), Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -5695,8 +5695,8 @@ pub mod tcp {
     /// Returns an error if the socket is not bound.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html
-    /// - https://man7.org/linux/man-pages/man2/getsockname.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html>
+    /// - <https://man7.org/linux/man-pages/man2/getsockname.2.html>
     pub fn local_address(this: TcpSocket) -> Result<IpSocketAddress, Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -5798,8 +5798,8 @@ pub mod tcp {
     /// Fails when the socket is not in the Connection state.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpeername.html
-    /// - https://man7.org/linux/man-pages/man2/getpeername.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpeername.html>
+    /// - <https://man7.org/linux/man-pages/man2/getpeername.2.html>
     pub fn remote_address(this: TcpSocket) -> Result<IpSocketAddress, Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -6746,8 +6746,8 @@ pub mod tcp {
     /// Fails when the socket is not in the Connection state.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/shutdown.html
-    /// - https://man7.org/linux/man-pages/man2/shutdown.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/shutdown.html>
+    /// - <https://man7.org/linux/man-pages/man2/shutdown.2.html>
     pub fn shutdown(this: TcpSocket, shutdown_type: ShutdownType) -> Result<(), Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -6832,8 +6832,8 @@ pub mod tcp_create_socket {
     /// is called, the socket is effectively an in-memory configuration object, unable to communicate with the outside world.
     ///
     /// References:
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/socket.html
-    /// - https://man7.org/linux/man-pages/man2/socket.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/socket.html>
+    /// - <https://man7.org/linux/man-pages/man2/socket.2.html>
     pub fn create_tcp_socket(address_family: IpAddressFamily) -> Result<TcpSocket, Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -6935,8 +6935,8 @@ pub mod udp {
     /// - the socket is already bound.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html
-    /// - https://man7.org/linux/man-pages/man2/bind.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html>
+    /// - <https://man7.org/linux/man-pages/man2/bind.2.html>
     pub fn bind(
         this: UdpSocket,
         network: Network,
@@ -7090,8 +7090,8 @@ pub mod udp {
     /// - the socket is already bound to a different network.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html
-    /// - https://man7.org/linux/man-pages/man2/connect.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html>
+    /// - <https://man7.org/linux/man-pages/man2/connect.2.html>
     pub fn connect(
         this: UdpSocket,
         network: Network,
@@ -7241,9 +7241,9 @@ pub mod udp {
     /// - the socket is not bound.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/recvfrom.html
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/recvmsg.html
-    /// - https://man7.org/linux/man-pages/man2/recv.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/recvfrom.html>
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/recvmsg.html>
+    /// - <https://man7.org/linux/man-pages/man2/recv.2.html>
     pub fn receive(this: UdpSocket) -> Result<DatagramResult, Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -7361,9 +7361,9 @@ pub mod udp {
     /// - the socket is in "connected" mode and the `datagram.remote-address` does not match the address passed to `connect`.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/sendto.html
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/sendmsg.html
-    /// - https://man7.org/linux/man-pages/man2/send.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/sendto.html>
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/sendmsg.html>
+    /// - <https://man7.org/linux/man-pages/man2/send.2.html>
     pub fn send(this: UdpSocket, datagram: DatagramParam<'_>) -> Result<(), Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -7513,8 +7513,8 @@ pub mod udp {
     /// Returns an error if the socket is not bound.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html
-    /// - https://man7.org/linux/man-pages/man2/getsockname.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html>
+    /// - <https://man7.org/linux/man-pages/man2/getsockname.2.html>
     pub fn local_address(this: UdpSocket) -> Result<IpSocketAddress, Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -7614,8 +7614,8 @@ pub mod udp {
     /// Get the address set with `connect`.
     ///
     /// References
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpeername.html
-    /// - https://man7.org/linux/man-pages/man2/getpeername.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpeername.html>
+    /// - <https://man7.org/linux/man-pages/man2/getpeername.2.html>
     pub fn remote_address(this: UdpSocket) -> Result<IpSocketAddress, Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -8325,8 +8325,8 @@ pub mod udp_create_socket {
     /// the socket is effectively an in-memory configuration object, unable to communicate with the outside world.
     ///
     /// References:
-    /// - https://pubs.opengroup.org/onlinepubs/9699919799/functions/socket.html
-    /// - https://man7.org/linux/man-pages/man2/socket.2.html
+    /// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/socket.html>
+    /// - <https://man7.org/linux/man-pages/man2/socket.2.html>
     pub fn create_udp_socket(address_family: IpAddressFamily) -> Result<UdpSocket, Error> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
