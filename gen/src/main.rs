@@ -30,6 +30,7 @@ fn main() -> io::Result<()> {
     .arg("rust")
     .arg("--rustfmt")
     .arg("--std-feature")
+    .arg("--macro-export")
     .arg("../wasi-cli/wit")
     .status()?.success();
     if !success {
