@@ -1,0 +1,6 @@
+[package]
+name = "byte-array"
+version = "0.12.0-experimental.0"
+
+[lib]
+proc-macro = true

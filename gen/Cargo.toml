@@ -6,3 +6,6 @@ publish = false
 
 [dependencies]
 tempfile = "3.3.0"
+
+[features]
+command = []

@@ -358,7 +358,7 @@ pub mod timezone {
         ///
         /// In time zones that do not have an applicable name, a formatted
         /// representation of the UTC offset may be returned, such as `-04:00`.
-        pub name: wit_bindgen::rt::string::String,
+        pub name: wit_bindgen::rt::vec::Vec<u8>,
         /// Whether daylight saving time is active.
         ///
         /// In implementations that do not expose an actual time zone, this
@@ -417,25 +417,7 @@ pub mod timezone {
             let len2 = *((ptr1 + 8) as *const i32) as usize;
             TimezoneDisplay {
                 utc_offset: *((ptr1 + 0) as *const i32),
-                name: {
-                    #[cfg(not(debug_assertions))]
-                    {
-                        String::from_utf8_unchecked(Vec::from_raw_parts(
-                            *((ptr1 + 4) as *const i32) as *mut _,
-                            len2,
-                            len2,
-                        ))
-                    }
-                    #[cfg(debug_assertions)]
-                    {
-                        String::from_utf8(Vec::from_raw_parts(
-                            *((ptr1 + 4) as *const i32) as *mut _,
-                            len2,
-                            len2,
-                        ))
-                        .unwrap()
-                    }
-                },
+                name: Vec::from_raw_parts(*((ptr1 + 4) as *const i32) as *mut _, len2, len2),
                 in_daylight_saving_time: {
                     #[cfg(not(debug_assertions))]
                     {
@@ -1216,7 +1198,7 @@ pub mod filesystem {
         /// The type of the file referred to by this directory entry.
         pub type_: DescriptorType,
         /// The name of the object.
-        pub name: wit_bindgen::rt::string::String,
+        pub name: wit_bindgen::rt::vec::Vec<u8>,
     }
     impl core::fmt::Debug for DirectoryEntry {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
@@ -2696,7 +2678,7 @@ pub mod filesystem {
     /// Create a directory.
     ///
     /// Note: This is similar to `mkdirat` in POSIX.
-    pub fn create_directory_at(this: Descriptor, path: &str) -> Result<(), ErrorCode> {
+    pub fn create_directory_at(this: Descriptor, path: &[u8]) -> Result<(), ErrorCode> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
         unsafe {
@@ -2907,7 +2889,7 @@ pub mod filesystem {
     pub fn stat_at(
         this: Descriptor,
         path_flags: PathFlags,
-        path: &str,
+        path: &[u8],
     ) -> Result<DescriptorStat, ErrorCode> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -3043,7 +3025,7 @@ pub mod filesystem {
     pub fn set_times_at(
         this: Descriptor,
         path_flags: PathFlags,
-        path: &str,
+        path: &[u8],
         data_access_timestamp: NewTimestamp,
         data_modification_timestamp: NewTimestamp,
     ) -> Result<(), ErrorCode> {
@@ -3188,9 +3170,9 @@ pub mod filesystem {
     pub fn link_at(
         this: Descriptor,
         old_path_flags: PathFlags,
-        old_path: &str,
+        old_path: &[u8],
         new_descriptor: Descriptor,
-        new_path: &str,
+        new_path: &[u8],
     ) -> Result<(), ErrorCode> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -3304,7 +3286,7 @@ pub mod filesystem {
     pub fn open_at(
         this: Descriptor,
         path_flags: PathFlags,
-        path: &str,
+        path: &[u8],
         open_flags: OpenFlags,
         flags: DescriptorFlags,
         modes: Modes,
@@ -3408,8 +3390,8 @@ pub mod filesystem {
     /// Note: This is similar to `readlinkat` in POSIX.
     pub fn readlink_at(
         this: Descriptor,
-        path: &str,
-    ) -> Result<wit_bindgen::rt::string::String, ErrorCode> {
+        path: &[u8],
+    ) -> Result<wit_bindgen::rt::vec::Vec<u8>, ErrorCode> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
         unsafe {
@@ -3431,25 +3413,7 @@ pub mod filesystem {
                 0 => Ok({
                     let len2 = *((ptr1 + 8) as *const i32) as usize;
 
-                    {
-                        #[cfg(not(debug_assertions))]
-                        {
-                            String::from_utf8_unchecked(Vec::from_raw_parts(
-                                *((ptr1 + 4) as *const i32) as *mut _,
-                                len2,
-                                len2,
-                            ))
-                        }
-                        #[cfg(debug_assertions)]
-                        {
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr1 + 4) as *const i32) as *mut _,
-                                len2,
-                                len2,
-                            ))
-                            .unwrap()
-                        }
-                    }
+                    Vec::from_raw_parts(*((ptr1 + 4) as *const i32) as *mut _, len2, len2)
                 }),
                 1 => Err({
                     #[cfg(debug_assertions)]
@@ -3515,7 +3479,7 @@ pub mod filesystem {
     /// Return `error-code::not-empty` if the directory is not empty.
     ///
     /// Note: This is similar to `unlinkat(fd, path, AT_REMOVEDIR)` in POSIX.
-    pub fn remove_directory_at(this: Descriptor, path: &str) -> Result<(), ErrorCode> {
+    pub fn remove_directory_at(this: Descriptor, path: &[u8]) -> Result<(), ErrorCode> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
         unsafe {
@@ -3602,9 +3566,9 @@ pub mod filesystem {
     /// Note: This is similar to `renameat` in POSIX.
     pub fn rename_at(
         this: Descriptor,
-        old_path: &str,
+        old_path: &[u8],
         new_descriptor: Descriptor,
-        new_path: &str,
+        new_path: &[u8],
     ) -> Result<(), ErrorCode> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
@@ -3701,7 +3665,7 @@ pub mod filesystem {
     /// `error-code::not-permitted`.
     ///
     /// Note: This is similar to `symlinkat` in POSIX.
-    pub fn symlink_at(this: Descriptor, old_path: &str, new_path: &str) -> Result<(), ErrorCode> {
+    pub fn symlink_at(this: Descriptor, old_path: &[u8], new_path: &[u8]) -> Result<(), ErrorCode> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
         unsafe {
@@ -3787,7 +3751,7 @@ pub mod filesystem {
     ///
     /// Return `error-code::is-directory` if the path refers to a directory.
     /// Note: This is similar to `unlinkat(fd, path, 0)` in POSIX.
-    pub fn unlink_file_at(this: Descriptor, path: &str) -> Result<(), ErrorCode> {
+    pub fn unlink_file_at(this: Descriptor, path: &[u8]) -> Result<(), ErrorCode> {
         #[allow(unused_imports)]
         use wit_bindgen::rt::{alloc, string::String, vec::Vec};
         unsafe {
@@ -3875,7 +3839,7 @@ pub mod filesystem {
     pub fn change_file_permissions_at(
         this: Descriptor,
         path_flags: PathFlags,
-        path: &str,
+        path: &[u8],
         modes: Modes,
     ) -> Result<(), ErrorCode> {
         #[allow(unused_imports)]
@@ -3981,7 +3945,7 @@ pub mod filesystem {
     pub fn change_directory_permissions_at(
         this: Descriptor,
         path_flags: PathFlags,
-        path: &str,
+        path: &[u8],
         modes: Modes,
     ) -> Result<(), ErrorCode> {
         #[allow(unused_imports)]
@@ -4621,25 +4585,11 @@ pub mod filesystem {
                                         as u8)
                                 }
                             },
-                            name: {
-                                #[cfg(not(debug_assertions))]
-                                {
-                                    String::from_utf8_unchecked(Vec::from_raw_parts(
-                                        *((ptr0 + 36) as *const i32) as *mut _,
-                                        len1,
-                                        len1,
-                                    ))
-                                }
-                                #[cfg(debug_assertions)]
-                                {
-                                    String::from_utf8(Vec::from_raw_parts(
-                                        *((ptr0 + 36) as *const i32) as *mut _,
-                                        len1,
-                                        len1,
-                                    ))
-                                    .unwrap()
-                                }
-                            },
+                            name: Vec::from_raw_parts(
+                                *((ptr0 + 36) as *const i32) as *mut _,
+                                len1,
+                                len1,
+                            ),
                         }
                     }),
                     #[cfg(not(debug_assertions))]
@@ -4906,7 +4856,7 @@ pub mod ip_name_lookup {
     /// - <https://man7.org/linux/man-pages/man3/getaddrinfo.3.html>
     pub fn resolve_addresses(
         network: Network,
-        name: &str,
+        name: &[u8],
         address_family: Option<IpAddressFamily>,
         include_unavailable: bool,
     ) -> Result<ResolveAddressStream, Error> {
@@ -8468,147 +8418,11 @@ pub mod random {
 }
 
 #[allow(clippy::all)]
-pub mod environment {
-    #[allow(clippy::all)]
-    /// Get the POSIX-style environment variables.
-    ///
-    /// Each environment variable is provided as a pair of string variable names
-    /// and string value.
-    ///
-    /// Morally, these are a value import, but until value imports are available
-    /// in the component model, this import function should return the same
-    /// values each time it is called.
-    pub fn get_environment() -> wit_bindgen::rt::vec::Vec<(
-        wit_bindgen::rt::string::String,
-        wit_bindgen::rt::string::String,
-    )> {
-        #[allow(unused_imports)]
-        use wit_bindgen::rt::{alloc, string::String, vec::Vec};
-        unsafe {
-            #[repr(align(4))]
-            struct RetArea([u8; 8]);
-            let mut ret_area = core::mem::MaybeUninit::<RetArea>::uninit();
-            let ptr0 = ret_area.as_mut_ptr() as i32;
-            #[link(wasm_import_module = "environment")]
-            extern "C" {
-                #[cfg_attr(target_arch = "wasm32", link_name = "get-environment")]
-                #[cfg_attr(not(target_arch = "wasm32"), link_name = "environment_get-environment")]
-                fn wit_import(_: i32);
-            }
-            wit_import(ptr0);
-            let base3 = *((ptr0 + 0) as *const i32);
-            let len3 = *((ptr0 + 4) as *const i32);
-            let mut result3 = Vec::with_capacity(len3 as usize);
-            for i in 0..len3 {
-                let base = base3 + i * 16;
-                result3.push({
-                    let len1 = *((base + 4) as *const i32) as usize;
-                    let len2 = *((base + 12) as *const i32) as usize;
-
-                    (
-                        {
-                            #[cfg(not(debug_assertions))]
-                            {
-                                String::from_utf8_unchecked(Vec::from_raw_parts(
-                                    *((base + 0) as *const i32) as *mut _,
-                                    len1,
-                                    len1,
-                                ))
-                            }
-                            #[cfg(debug_assertions)]
-                            {
-                                String::from_utf8(Vec::from_raw_parts(
-                                    *((base + 0) as *const i32) as *mut _,
-                                    len1,
-                                    len1,
-                                ))
-                                .unwrap()
-                            }
-                        },
-                        {
-                            #[cfg(not(debug_assertions))]
-                            {
-                                String::from_utf8_unchecked(Vec::from_raw_parts(
-                                    *((base + 8) as *const i32) as *mut _,
-                                    len2,
-                                    len2,
-                                ))
-                            }
-                            #[cfg(debug_assertions)]
-                            {
-                                String::from_utf8(Vec::from_raw_parts(
-                                    *((base + 8) as *const i32) as *mut _,
-                                    len2,
-                                    len2,
-                                ))
-                                .unwrap()
-                            }
-                        },
-                    )
-                });
-            }
-            wit_bindgen::rt::dealloc(base3, (len3 as usize) * 16, 4);
-            result3
-        }
-    }
-}
+pub mod environment {}
 
 #[allow(clippy::all)]
 pub mod environment_preopens {
     pub type Descriptor = super::filesystem::Descriptor;
-    #[allow(clippy::all)]
-    /// Return a list of preopens for use in interpreting environment variables.
-    pub fn preopens() -> wit_bindgen::rt::vec::Vec<(Descriptor, wit_bindgen::rt::string::String)> {
-        #[allow(unused_imports)]
-        use wit_bindgen::rt::{alloc, string::String, vec::Vec};
-        unsafe {
-            #[repr(align(4))]
-            struct RetArea([u8; 8]);
-            let mut ret_area = core::mem::MaybeUninit::<RetArea>::uninit();
-            let ptr0 = ret_area.as_mut_ptr() as i32;
-            #[link(wasm_import_module = "environment-preopens")]
-            extern "C" {
-                #[cfg_attr(target_arch = "wasm32", link_name = "preopens")]
-                #[cfg_attr(
-                    not(target_arch = "wasm32"),
-                    link_name = "environment-preopens_preopens"
-                )]
-                fn wit_import(_: i32);
-            }
-            wit_import(ptr0);
-            let base2 = *((ptr0 + 0) as *const i32);
-            let len2 = *((ptr0 + 4) as *const i32);
-            let mut result2 = Vec::with_capacity(len2 as usize);
-            for i in 0..len2 {
-                let base = base2 + i * 12;
-                result2.push({
-                    let len1 = *((base + 8) as *const i32) as usize;
-
-                    (*((base + 0) as *const i32) as u32, {
-                        #[cfg(not(debug_assertions))]
-                        {
-                            String::from_utf8_unchecked(Vec::from_raw_parts(
-                                *((base + 4) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                        }
-                        #[cfg(debug_assertions)]
-                        {
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((base + 4) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
-                        }
-                    })
-                });
-            }
-            wit_bindgen::rt::dealloc(base2, (len2 as usize) * 12, 4);
-            result2
-        }
-    }
 }
 
 #[allow(clippy::all)]
@@ -8637,121 +8451,7 @@ pub mod exit {
 pub type InputStream = streams::InputStream;
 pub type OutputStream = streams::OutputStream;
 pub type Descriptor = filesystem::Descriptor;
-pub trait Cli {
-    fn command(
-        stdin: InputStream,
-        stdout: OutputStream,
-        stderr: OutputStream,
-        args: wit_bindgen::rt::vec::Vec<wit_bindgen::rt::string::String>,
-        preopens: wit_bindgen::rt::vec::Vec<(Descriptor, wit_bindgen::rt::string::String)>,
-    ) -> Result<(), ()>;
-}
-
-#[doc(hidden)]
-pub unsafe fn call_command<T: Cli>(
-    arg0: i32,
-    arg1: i32,
-    arg2: i32,
-    arg3: i32,
-    arg4: i32,
-    arg5: i32,
-    arg6: i32,
-) -> i32 {
-    #[allow(unused_imports)]
-    use wit_bindgen::rt::{alloc, string::String, vec::Vec};
-    let base1 = arg3;
-    let len1 = arg4;
-    let mut result1 = Vec::with_capacity(len1 as usize);
-    for i in 0..len1 {
-        let base = base1 + i * 8;
-        result1.push({
-            let len0 = *((base + 4) as *const i32) as usize;
-
-            {
-                #[cfg(not(debug_assertions))]
-                {
-                    String::from_utf8_unchecked(Vec::from_raw_parts(
-                        *((base + 0) as *const i32) as *mut _,
-                        len0,
-                        len0,
-                    ))
-                }
-                #[cfg(debug_assertions)]
-                {
-                    String::from_utf8(Vec::from_raw_parts(
-                        *((base + 0) as *const i32) as *mut _,
-                        len0,
-                        len0,
-                    ))
-                    .unwrap()
-                }
-            }
-        });
-    }
-    wit_bindgen::rt::dealloc(base1, (len1 as usize) * 8, 4);
-    let base3 = arg5;
-    let len3 = arg6;
-    let mut result3 = Vec::with_capacity(len3 as usize);
-    for i in 0..len3 {
-        let base = base3 + i * 12;
-        result3.push({
-            let len2 = *((base + 8) as *const i32) as usize;
-
-            (*((base + 0) as *const i32) as u32, {
-                #[cfg(not(debug_assertions))]
-                {
-                    String::from_utf8_unchecked(Vec::from_raw_parts(
-                        *((base + 4) as *const i32) as *mut _,
-                        len2,
-                        len2,
-                    ))
-                }
-                #[cfg(debug_assertions)]
-                {
-                    String::from_utf8(Vec::from_raw_parts(
-                        *((base + 4) as *const i32) as *mut _,
-                        len2,
-                        len2,
-                    ))
-                    .unwrap()
-                }
-            })
-        });
-    }
-    wit_bindgen::rt::dealloc(base3, (len3 as usize) * 12, 4);
-    let result4 = T::command(arg0 as u32, arg1 as u32, arg2 as u32, result1, result3);
-    let result5 = match result4 {
-        Ok(_) => 0i32,
-        Err(_) => 1i32,
-    };
-    result5
-}
-
-/// Declares the export of the component's world for the
-/// given type.
-#[macro_export]
-macro_rules! export_cli(($t:ident) => {
-    const _: () = {
-
-      #[doc(hidden)]
-      #[export_name = "command"]
-      #[allow(non_snake_case)]
-      unsafe extern "C" fn __export_cli_command(arg0: i32,arg1: i32,arg2: i32,arg3: i32,arg4: i32,arg5: i32,arg6: i32,) -> i32 {
-        call_command::<$t>(arg0,arg1,arg2,arg3,arg4,arg5,arg6,)
-      }
-
-    };
-
-    #[used]
-    #[doc(hidden)]
-    #[cfg(target_arch = "wasm32")]
-    static __FORCE_SECTION_REF: fn() = __force_section_ref;
-    #[doc(hidden)]
-    #[cfg(target_arch = "wasm32")]
-    fn __force_section_ref() {
-      __link_section()
-    }
-  });
+pub trait Cli {}
 
 #[cfg(target_arch = "wasm32")]
 #[link_section = "component-type:cli"]
