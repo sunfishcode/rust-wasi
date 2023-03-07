@@ -6,18 +6,18 @@
 pub mod macros;
 
 #[cfg(feature = "command")]
-#[cfg_attr(not(feature = "normal"), path = "polyfill/cli.rs")]
-mod cli;
+#[cfg_attr(not(feature = "normal"), path = "polyfill/command.rs")]
+mod command;
 
 #[cfg(feature = "command")]
-pub use cli::*;
+pub use command::*;
 
 #[cfg(not(feature = "command"))]
-#[cfg_attr(not(feature = "normal"), path = "polyfill/cli_reactor.rs")]
-mod cli_reactor;
+#[cfg_attr(not(feature = "normal"), path = "polyfill/reactor.rs")]
+mod reactor;
 
 #[cfg(not(feature = "command"))]
-pub use cli_reactor::*;
+pub use reactor::*;
 
 pub mod fd;
 pub mod trapping_unwrap;

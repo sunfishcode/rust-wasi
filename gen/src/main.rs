@@ -43,7 +43,7 @@ fn main() -> io::Result<()> {
         ));
     }
 
-    // Generate the main cli-reactor bindings.
+    // Generate the main reactor bindings.
     let success = Command::new(tmp.path().join("bin/wit-bindgen"))
         .current_dir("../src")
         .arg("rust")
@@ -93,7 +93,7 @@ fn main() -> io::Result<()> {
         ));
     }
 
-    // Generate the specialized cli-reactor bindings used by the polyfill.
+    // Generate the specialized reactor bindings used by the polyfill.
     let success = Command::new(tmp.path().join("bin/wit-bindgen"))
         .current_dir("../src")
         .arg("rust")

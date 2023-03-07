@@ -5,12 +5,12 @@
 //! for managing a table of file descriptors where indices into the table are
 //! presented to the user as file descriptors.
 
-use crate::trapping_unwrap::TrappingUnwrap;
 use crate::filesystem::{
     append_via_stream, drop_descriptor, read_via_stream, write_via_stream, Descriptor, Filesize,
 };
 use crate::streams::{drop_input_stream, drop_output_stream, InputStream, OutputStream};
 use crate::tcp::TcpSocket;
+use crate::trapping_unwrap::TrappingUnwrap;
 use core::cell::Cell;
 use core::convert::TryFrom;
 use core::num::TryFromIntError;
@@ -55,8 +55,7 @@ impl Streams {
                 // For files, we may have adjusted the position for seeking, so
                 // create a new stream.
                 StreamType::File(file) => {
-                    let input =
-                        read_via_stream(file.fd, file.position.get()).map_err(|_| NotReadable)?;
+                    let input = read_via_stream(file.fd, file.position.get());
                     self.input.set(Some(input));
                     Ok(input)
                 }
@@ -74,9 +73,9 @@ impl Streams {
                 // create a new stream.
                 StreamType::File(file) => {
                     let output = if file.append {
-                        append_via_stream(file.fd, file.fd).map_err(|_| NotWriteable)?
+                        append_via_stream(file.fd)
                     } else {
-                        write_via_stream(file.fd, file.position.get()).map_err(|_| NotWriteable)?
+                        write_via_stream(file.fd, file.position.get())
                     };
                     self.output.set(Some(output));
                     Ok(output)
@@ -283,7 +282,7 @@ pub trait FdTableAccessors {
         }
     }
 }
-  
+
 /// Error types for file descriptor table accessors.
 pub mod error {
     /// Error type for an out-of-bounds or closed file descriptor.
