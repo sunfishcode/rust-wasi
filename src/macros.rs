@@ -6,11 +6,10 @@
 #[doc(hidden)]
 pub use byte_array;
 
-// TODO: Wire this up to stderr.
 #[allow(dead_code)]
 #[doc(hidden)]
 pub fn print(message: &[u8]) {
-    let _todo = message;
+    crate::stderr::print(message)
 }
 
 /// A minimal `eprint` for debugging.
