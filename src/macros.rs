@@ -60,6 +60,7 @@ macro_rules! unreachable {
     () => {{
         eprint!("unreachable executed at line ");
         $crate::macros::eprint_u32(line!());
+        eprint!("\n");
         core::arch::wasm32::unreachable()
     }};
 
