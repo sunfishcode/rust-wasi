@@ -149,7 +149,9 @@ pub struct File {
 pub trait FdTableAccessors {
     /// Push an entry to the end of the entries table. This doesn't reuse
     /// closed entries; most users should use `insert` instead.
-    fn push(&mut self, entry: FdEntry) -> Result<RawFd, OutOfMemory>;
+    ///
+    /// This uses internal mutability.
+    fn push(&self, entry: FdEntry) -> Result<RawFd, OutOfMemory>;
 
     /// Return a slice containing all the file descriptor entries.
     fn descriptors(&self) -> &[FdEntry];
