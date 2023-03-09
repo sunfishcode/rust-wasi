@@ -1,4 +1,4 @@
-default world reactor {
+default world command {
   import wall-clock: clocks.wall-clock
   import monotonic-clock: clocks.monotonic-clock
   import timezone: clocks.timezone
@@ -17,4 +17,15 @@ default world reactor {
   import environment-preopens: pkg.environment-preopens
   import exit: pkg.exit
   import stderr: pkg.stderr
+
+  use io.streams.{input-stream, output-stream}
+  use filesystem.types.{descriptor}
+
+  export main: func(
+    stdin: input-stream,
+    stdout: output-stream,
+    stderr: output-stream,
+    args: list<string>,
+    preopens: list<tuple<descriptor, string>>,
+  ) -> result
 }

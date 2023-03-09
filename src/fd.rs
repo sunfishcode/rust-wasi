@@ -28,7 +28,7 @@ pub enum FdEntry {
     /// Input and/or output wasi-streams, along with stream metadata.
     Streams(Streams),
 
-    /// Writes to `fd_write` will go to the `wasi-stderr` API.
+    /// Writes to `fd_write` will go to the `stderr` API.
     Stderr,
 }
 
